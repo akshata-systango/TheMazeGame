@@ -63,7 +63,7 @@ select {
 }
 
 
-.custom-select {
+/*.custom-select {
     display: inline-block;
 
     font-size: 1rem;
@@ -77,7 +77,7 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-}
+}*/
 
 #Message-Container {
     visibility: hidden;
