@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+      <title>maze Game</title>
+      
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="/home/akshata/Desktop/systango/Finalise/css/base.css">
+  
+  </head>
+  
+  <body >
+       
+<!-- Start of victory message container -->
+
+      <div id="Message-Container"  style="visibility: hidden;">
+        <div id="message">
+          <h1>Congratulations!</h1>
+          <p>You are done.</p>
+          <p id="moves"></p>
+          <input id="okBtn" type="button" onclick="toggleVisablity('Message-Container')" value="Cool!"> 
+          <input type="button" id="viewLeaderBoard" onclick="#" value="LeaderBoard"/>
+        </div>
+      </div>
+      
+<!-- end of vicory message container -->
+  
+<!-- start of dropdown menu and start button  -->
+      <div class="dropdown1">
+
+        <!-- dropdown list of difficulty level -->
+        <select id="diffSelect" class="btn btn-secondary dropdown-toggle">
+            <option value="10">Easy</option>
+            <option value="38">Extreme</option>                                      
+            <option value="25">Hard</option>
+            <option value="15">Medium</option>          
+        </select>
+
+        <!-- button to start the maze -->
+        <input type="button" class="btn btn-danger" id="startMazeBtn" onclick="makeMaze()" value="start" />
+
+        <!-- dropdown menu  to select scoreboard according to the different level-->
+        <div class="dropdown">
+          <button class="dropbtn">LeaderBoard</button>
+          <div class="dropdown-content">
+            <a href="#">Easy</a>
+            <a href="#">Medium</a>
+            <a href="#">Hard</a>
+            <a href="#">Extreme</a>
+          </div>
+        </div>
+
+        <!-- exit button to go back to login page -->
+        <a href="/home/akshata/Desktop/systango/Finalise/html/index.html"><input type="button" name="exit" class="btn btn-danger" id="exitbtn" value="Exit"/></a>
+
+
+      </div>
+  
+<!-- end of dropdown menu and start button -->
+
+<!-- start of the canvas to draw the maze -->
+      
+      <div id="view">
+        <div id="mazeContainer">
+          <canvas id="mazeCanvas" class="border" height="450" width="500" style = "background-color: transparent;"></canvas>
+        </div>
+      </div>
+
+<!-- end of the canvas -->
+
+<!-- start of online scripts -->
+
+<script type="text/javascript" src="/home/akshata/Desktop/systango/Finalise/javascript/game.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" integrity="sha256-qM7QTJSlvtPSxVRjVWNM2OfTAz/3k5ovHOKmKXuYMO4=" crossorigin="anonymous">></script>
+<!-- end of online scripts -->
+
+  </body>
+</html>
