@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <title>login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="E:\FindTheCarrot\css\Index.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="E:\FindTheCarrot\Server\Config.js"></script>
+
+  </head>
+<body>
+
+  <!-- div to add image on background -->
+  <div class="Bg_Image"></div>
+
+<!--start of div to add heading -->
+  <div class="Poster">
+    <h1><img src="E:\FindTheCarrot\Media\2.gif"> Find The Carrot!! <img src="E:\FindTheCarrot\Media\ca.gif"></h1>
+  </div>
+<!-- end of div to add heading -->
+
+
+<!-- start of login window -->
+  <div class="LoginWindow">
+    <h4>Login Credentials</h4>
+    <input type="text" id="username" placeholder="PlayerUsername" class="test">
+    <p style="color: red;" id="username_error"></p>
+    <input type="text" id="Fname" placeholder="FullName" class="test">
+    <br>
+    <button class="ProceedBtn" id="ProceedBtn" onclick="ValidateData()">let's go</button>
+  </div>
+<!-- end of login window -->
+  <script src="E:\FindTheCarrot\Main_Scripts\LoginDataValidation.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.BackImage {
+    /* The image used */
+  background-image: url("E:/FindTheCarrot/Media/bg1.png");
+
+    /* Add the blur effect */
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+
+    /* Full height */
+  height: 100%;
+
+    /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.TableView {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  border: 1px solid #f1f1f1;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: fit-content;
+  padding: 29px;
+  text-align: center;
+}

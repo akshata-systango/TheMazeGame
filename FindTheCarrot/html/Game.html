@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Maze Game</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../css/Game.css">
+  <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+  <script src="E:\FindTheCarrot\Server\Config.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Start of victory message container -->
+
+  <div id="Message-Container" style="visibility: hidden;">
+    <div id="message">
+      <h1>Congratulations!!</h1>
+      <p>You Won!!.</p>
+      <p id="moves"></p>
+      <input id="okBtn" type="button" onclick="toggleVisablity('Message-Container')" value="Great!!">
+    </div>
+  </div>
+
+  <!-- end of vicory message container -->
+
+  <!-- start of dropdown menu and start button  -->
+  <div class="dropdown1">
+
+    <!-- dropdown list of difficulty level -->
+    <select id="diffSelect" class="btn btn-secondary dropdown-toggle">
+      <option value="10">Easy</option>
+      <option value="15">Medium</option>
+      <option value="25">Hard</option>
+      <option value="38">Extreme</option>
+
+
+    </select>
+
+    <!-- button to start the maze -->
+    <input type="button" class="btn btn-danger" id="startMazeBtn" onclick="makeMaze()" value="start" />
+
+
+    <!-- exit button to go back to login page -->
+
+    <a href="E:/FindTheCarrot/Index.html"><input type="button" name="exit" class="btn btn-danger" id="exitbtn"
+        value="Exit" /></a>
+
+    <!-- dropdown menu  to select scoreboard according to the different level-->
+    <div class="dropdown">
+      <button class="dropbtn">LeaderBoard</button>
+      <div class="dropdown-content">
+        <a href="E:\FindTheCarrot\Leaderboard_Page\Easy_Level_Leaderboard.html">Easy</a>
+        <a href="E:\FindTheCarrot\Leaderboard_Page\Medium_Level_Leaderboard.html">Medium</a>
+        <a href="E:\FindTheCarrot\Leaderboard_Page\Hard_Level_Leaderboard.html">Hard</a>
+        <a href="E:\FindTheCarrot\Leaderboard_Page\Extreme_Level_Leaderboard.html">Extreme</a>
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+  <!-- end of dropdown menu and start button -->
+
+  <!-- start of the canvas to draw the maze -->
+
+  <div id="view">
+    <div id="mazeContainer">
+      <canvas id="mazeCanvas" class="border" height="450" width="500" style="background-color: transparent;"></canvas>
+    </div>
+  </div>
+
+  <!-- end of the canvas -->
+
+  <!-- start of online scripts -->
+
+  <script type="text/javascript" src="E:\FindTheCarrot\Main_Scripts\Game.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"></script>
+  <!-- end of online scripts -->
+
+</body>
+
+</html>

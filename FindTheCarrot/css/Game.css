@@ -1,0 +1,169 @@
+body{
+  overflow: hidden;
+  background-size: 400% 400%;
+  background-image: linear-gradient(-45deg,#FEAC5E,#C779D0,#4BC0C8);
+  animation: gradient 15s ease infinite;
+}
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+button
+{
+    text-align: center;
+    margin-top: 6px;
+}
+#uname{
+margin-left: 550px;    
+}
+#diffSelect:hover{background-color: lawngreen; color: black;}
+#startMazeBtn:hover{background-color: yellow; color: black;}
+#exitbtn:hover{background-color: cyan; color: black;}
+
+#diffSelect{
+    height: 40px;
+    width: 90px;
+}
+
+.dropdown1
+{
+    margin-left: 490px;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+#message:before{
+    content: '';
+    color: red;
+    width: 400px;
+    height: 170px;
+    position: fixed;
+    
+    background:rgba(0,0,0,0.1); 
+
+}
+#menu
+{
+    margin: auto;
+    padding: 10px;
+    height: 65px;
+    box-sizing: border-box;
+}
+h1
+{
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 3.2rem;
+}
+#view
+{
+    margin-top: 10px;
+    top:65px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 700px;
+    height: 500px;
+    margin-left: 450px;
+}
+#startMazeBtn{
+    margin-left: 30px;
+}
+#exitbtn{
+    width: 70px;
+    height: 40px;
+    margin-left: 20px;
+    text-align: center;
+    margin-top: 10px;
+    color: whitesmoke;
+}
+p{
+    font-weight: 1000;
+}
+input
+{
+    background-color: whitesmoke;
+    width: 70px;
+    height: 40px;
+    border : 5px solid grey;
+    text-align: center;
+    margin-top: 10px;
+    color: white;
+    
+}
+span
+{
+    border : 10px solid orange;
+    margin-top: 10px;
+    margin-left: 130px;
+}
+#message
+{
+    width: 300px;
+    height: 300px;
+    position: fixed;
+    margin-left: 500px;
+    margin-top: 170px;
+    color: white;
+}
+
+#okBtn{
+    background-color:  rebeccapurple;
+    border-radius: 5px;
+    width: 120px;
+    height: 40px;
+    border : 5px solid grey;
+    text-align: center;
+    color: whitesmoke;
+}
+
+.dropbtn {
+  background-color: mediumpurple;
+  color: white;
+  width: 100px;
+  height: 40px;
+  font-size: 14px;
+  border: none;
+  margin-left: 20px;
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+.dropdown
+{
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: rebeccapurple;}
