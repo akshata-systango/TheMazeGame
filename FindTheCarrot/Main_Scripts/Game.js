@@ -1,18 +1,25 @@
 var mazeCanvas = document.getElementById("mazeCanvas");
 var ctx = mazeCanvas.getContext("2d");
 ctx.strokeStyle = "Black";
-ctx.fillStyle= "pink";
 ctx.fillRect(0, 0, mazeCanvas.width, mazeCanvas.height);
-
-
 var StartSprite;
 var finishSprite;
+var ghostSprite;
 var maze, draw, player;
+var total_moves;
 var cellSize;
 var difficulty;
 var audio;
-var count = 0;
-window.onload = function() {
+var checkAudio = 0;
+var playerStartingCoord;
+var ghostmape;
+var ghostdirection;
+var ghostIndex = 0;
+var ghostdirection = [];
+var isFirstTime = true;
+var isGameInProgress = false;
+
+window.onload = function () {
   let viewWidth = $("#view").width();
   let viewHeight = $("#view").height();
   if (viewHeight < viewWidth) {
@@ -25,43 +32,44 @@ window.onload = function() {
 
   //Load and edit sprites
   var spiritOne = false;
-  var  spiritTwo = false;
+  var spiritTwo = false;
   var isComplete = () => {
-    if(spiritOne === true && spiritTwo === true)
-       {
-         console.log("Runs");
-         setTimeout(function(){
-           makeMaze();
-         }, 500);         
-       }
+    if (spiritOne === true && spiritTwo === true) {
+      console.log("Runs");
+      setTimeout(function () {
+        makeMaze();
+      }, 500);
+
+    }
   };
   startSprite = new Image();
- startSprite.src = "https://i.ibb.co/Yf0mdKJ/2.gif";
-  startSprite.onload = function() {
-     spiritOne = true;
+  startSprite.src = "https://i.ibb.co/Yf0mdKJ/2.gif";
+  startSprite.onload = function () {
+    spiritOne = true;
     isComplete();
   };
 
-//
+  
   finishSprite = new Image();
   finishSprite.src = "https://i.ibb.co/MhNC04y/ca.gif";
-  finishSprite.onload = function() {
-     spiritTwo = true;
+  finishSprite.onload = function () {
+    spiritTwo = true;
     isComplete();
   };
-  
+
+  ghostSprite = new Image();
+  ghostSprite.src = "https://i.ibb.co/3dh5Z8z/photofunky.gif";
 };
 
-
-window.onresize = function() {
+window.onresize = function () {
   let viewWidth = $("#view").width();
   let viewHeight = $("#view").height();
   if (viewHeight < viewWidth) {
-    ctx.canvas.width = viewHeight - viewHeight / 100;
-    ctx.canvas.height = viewHeight - viewHeight / 100;
+    ctx.canvas.width = viewHeight;
+    ctx.canvas.height = viewHeight;
   } else {
-    ctx.canvas.width = viewWidth - viewWidth / 100;
-    ctx.canvas.height = viewWidth - viewWidth / 100;
+    ctx.canvas.width = viewWidth;
+    ctx.canvas.height = viewWidth;
   }
   cellSize = mazeCanvas.width / difficulty;
   if (player != null) {
@@ -69,11 +77,143 @@ window.onresize = function() {
     player.redrawPlayer(cellSize);
   }
 };
+
+//Ghost implementation
+function ghostRun(ghostSprite = null) {
+  ghostIndex = 0;
+  var halfCellSize = (cellSize / 2) - 10;
+  var ghostStartCoord = playerStartingCoord;
+  var moves = 0;
+
+  function move() {
+    console.log("move called");
+    if (!isGameInProgress) {
+      return;
+    }
+    var paths = ghostdirection[ghostIndex];
+    var gx = paths.x;
+    var gy = paths.y;
+    var gd = paths.d;
+    checkPosition(gx, gy, gd, ghostmape);
+    ghostIndex++;
+    setTimeout(move, 1000);
+  }
+
+
+  function remove(x, y) {
+    console.log(x, y);
+    var left = cellSize / 40;
+    var right = cellSize / 25;
+    ctx.clearRect(
+      x * cellSize + left,
+      y * cellSize + left,
+      cellSize - right,
+      cellSize - right
+    );
+  }
+
+  function drawSprite(x, y) {
+    var left = cellSize / 40;
+    var right = cellSize / 25;
+    var length = ghostdirection.length;
+    var cood = ghostdirection[length - 1];
+    var playerx = cood.x;
+    var playery = cood.y;
+
+    ctx.drawImage(
+      ghostSprite,
+      0,
+      0,
+      ghostSprite.width,
+      ghostSprite.height,
+      x * cellSize + left,
+      y * cellSize + left,
+      cellSize - right,
+      cellSize - right
+    );
+    if (x === playerx && y === playery) {
+      console.log("catch");
+      isGameInProgress = false;
+      ghostdirection = [];
+      player.unbindKeyDown();
+      displayLooseMess();
+    }
+  }
+
+
+  function checkPosition(x, y, dir, ghostmape) {
+    var cell = ghostmape[x][y];
+    switch (dir) {
+      case 'e': // east
+                if (cell.w == true) {
+                remove(x - 1, y);
+                drawSprite(x, y);
+                } 
+                break;
+      case 's': // south
+               if (cell.n == true) {
+               remove(x, y - 1);
+               drawSprite(x, y);
+               }
+               break;
+      case 'w': // west
+                 if (cell.e == true) {
+                 remove(x + 1, y);
+                 drawSprite(x, y);
+                 }
+                 break;
+      case 'n': // north
+                if (cell.s == true) {
+                remove(x, y + 1);
+                drawSprite(x, y);
+                }
+                break;
+             }
+  }
+
+  //image rabbit
+  function drawImage(ghostStartCoord) {
+    var left = cellSize / 50;
+    var right = cellSize / 25;
+
+    ctx.drawImage(
+      ghostSprite,
+      0,
+      0,
+      ghostSprite.width,
+      ghostSprite.height,
+      ghostStartCoord.x * cellSize + left,
+      ghostStartCoord.y * cellSize + left,
+      cellSize - right,
+      cellSize - right
+    );
+  }
+
+  function drawGhostSprite(coord) {
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.arc(
+      (coord.x + 1) * cellSize - halfCellSize,
+      (coord.y + 1) * cellSize - halfCellSize,
+      halfCellSize - 2,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+  }
+
+  if (ghostSprite == null) {
+    drawGhostSprite(ghostStartCoord);
+  }
+  drawImage(ghostStartCoord);
+  move();
+}
+
+
 // Background music start as soon as player hits the start button
-var count = 0;
-function music(){
-   audio = new Audio('../Media/gameSound.mpeg');
-   audio.play();
+function music() {
+  audio = new Audio('../Media/gameSound.mpeg');
+  audio.play();
 }
 //Stop music on end game
 function stop() {
@@ -86,22 +226,26 @@ function rand(number) {
 }
 // Shuffles the directions 
 function shuffle(direction) {
-    for (var i = direction.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = direction[i];
-        direction[i] = direction[j];
-        direction[j] = temp;
-    }
-    return direction;
+  for (var i = direction.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = direction[i];
+    direction[i] = direction[j];
+    direction[j] = temp;
+  }
+  return direction;
 }
 //Function to display final scores
 function displayVictoryMess(moves) {
-  total_moves = moves;
-  stop();
+  total_moves = moves
+   stop();
   score_selector_levels();
- 
   document.getElementById("moves").innerHTML = "You Moved " + moves + " Steps.";
-  toggleVisablity("Message-Container");   
+  toggleVisablity("Message-Container");
+}
+
+function displayLooseMess() {
+  stop();
+   toggleVisablity("LooseMessage-Container");
 }
 // Function to set visibility of score
 function toggleVisablity(id) {
@@ -141,16 +285,16 @@ function Maze(Width, Height) {
     }
   };
 
-  this.map = function() {
+  this.map = function () {
     return maze;
   };
-  this.startingCoordinate = function() {
+  this.startingCoordinate = function () {
     return startingCoordinate;
   };
-  this.endingCoordinate = function() {
+  this.endingCoordinate = function () {
     return endingCoordinate;
   };
-//Function to create 2-D array
+  //Function to create 2-D array
   function genMap() {
     maze = new Array(height);
     for (y = 0; y < height; y++) {
@@ -167,7 +311,7 @@ function Maze(Width, Height) {
       }
     }
   }
-//Function to set path of maze
+  //Function to set path of maze
   function defineMaze() {
     var maze_Complete = false;
     var move = false;
@@ -201,7 +345,7 @@ function Maze(Width, Height) {
             //Set Currentcell as next cells Prior visited
             maze[nx][ny].priorPos = position;
             //Update Cell position to newly visited location
-            position = { x: nx, y: ny};
+            position = { x: nx, y: ny };
             cellsVisited++;
             //Recursively call this method on the next tile
             move = true;
@@ -221,7 +365,7 @@ function Maze(Width, Height) {
     }
   }
 
-//Funtion to set the coordinates of start and final sprites
+  //Funtion to set the coordinates of start and final sprites
   function defineStartEnd() {
     switch (rand(4)) {
       case 0:
@@ -267,13 +411,13 @@ function Maze(Width, Height) {
     }
   }
 
-if(count == 0){
-  music();
-  count++;
-}else{
-  stop();
-  music();
-}
+  if (checkAudio == 0) {
+    music();
+    checkAudio++;
+  } else {
+    stop();
+    music();
+  }
   genMap();
   defineStartEnd();
   defineMaze();
@@ -285,7 +429,7 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
   var drawEndMethod;
   ctx.lineWidth = cellSize / 30;
 
-  this.redrawMaze = function(size) {
+  this.redrawMaze = function (size) {
     cellSize = size;
     ctx.lineWidth = cellSize / 50;
     drawMap();
@@ -329,7 +473,7 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
       }
     }
   }
-//Display the default finish spirte if sprite not loaded on end coordinates
+  //Display the default finish spirte if sprite not loaded on end coordinates
   function drawEndFlag() {
     var coord = Maze.endingCoordinate();
     var gridSize = 4;
@@ -342,8 +486,8 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
       for (let x = 0; x < gridSize; x++) {
         ctx.beginPath();
         ctx.rect(
-          coord.x * cellSize + x * fraction + 4.5,
-          coord.y * cellSize + y * fraction + 4.5,
+          coord.x * cellSize + x,
+          coord.y * cellSize - y,
           fraction,
           fraction
         );
@@ -357,7 +501,7 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
       }
     }
   }
-// Display the finish sprite on end coordinates
+  // Display the finish sprite on end coordinates
   function drawEndSprite() {
     var offsetLeft = cellSize / 50;
     var offsetRight = cellSize / 5;
@@ -374,7 +518,7 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
       cellSize - offsetRight
     );
   }
-//Function always clear the previous sprite on restarting the game
+  //Function always clear the previous sprite on restarting the game
   function clear() {
     var canvasSize = cellSize * map.length;
     ctx.clearRect(0, 0, canvasSize, canvasSize);
@@ -407,12 +551,12 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
   var cellSize = _cellsize;
   var halfCellSize = cellSize / 2;
 
-  this.redrawPlayer = function(_cellsize) {
+  this.redrawPlayer = function (_cellsize) {
     cellSize = _cellsize;
     drawSpriteImg(cellCoords);
   };
 
-// Draw the default start sprite if sprite is not loaded on starting coordinates
+  // Draw the default start sprite if sprite is not loaded on starting coordinates
   function drawSpriteCircle(coord) {
     ctx.beginPath();
     ctx.fillStyle = "yellow";
@@ -429,7 +573,7 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       player.unbindKeyDown();
     }
   }
-// Draw  start sprite on starting coordinates
+  // Draw  start sprite on starting coordinates
   function drawSpriteImg(coord) {
     var left = cellSize / 50;
     var right = cellSize / 25;
@@ -445,13 +589,14 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       cellSize - right
     );
     if (coord.x === maze.endingCoordinate().x && coord.y === maze.endingCoordinate().y) {
+      isGameInProgress = false;
       onComplete(moves);
       player.unbindKeyDown();
     }
   }
-//Function to revome the sprite
+  //Function to revome the sprite
   function removeSprite(coord) {
-    var left = cellSize / 50;
+    var left = cellSize / 40;
     var right = cellSize / 25;
     ctx.clearRect(
       coord.x * cellSize + left,
@@ -460,10 +605,18 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       cellSize - right
     );
   }
-//Function to check the direction for movements
+  //Function to check the direction for movements
   function check(e) {
+    if (isFirstTime) {
+      setTimeout(function () {
+        ghostRun(ghostSprite);
+      }, 10000);
+      isFirstTime = false;
+    }
+    isGameInProgress = true;
     var cell = map[cellCoords.x][cellCoords.y];
     moves++;
+
     switch (e.keyCode) {
       case 37: // west
         if (cell.w == true) {
@@ -473,6 +626,12 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
             y: cellCoords.y
           };
           drawSprite(cellCoords);
+          cord = {
+            x: cellCoords.x,
+            y: cellCoords.y,
+            d: "w"
+          };
+          ghostdirection.push(cord);
         }
         break;
       case 38: // north
@@ -483,6 +642,12 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
             y: cellCoords.y - 1
           };
           drawSprite(cellCoords);
+          cord = {
+            x: cellCoords.x,
+            y: cellCoords.y,
+            d: "n"
+          };
+          ghostdirection.push(cord);
         }
         break;
       case 39: // east
@@ -493,6 +658,13 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
             y: cellCoords.y
           };
           drawSprite(cellCoords);
+          cord = {
+            x: cellCoords.x,
+            y: cellCoords.y,
+            d: "e"
+          };
+          ghostdirection.push(cord);
+
         }
         break;
       case 40: // south
@@ -503,32 +675,40 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
             y: cellCoords.y + 1
           };
           drawSprite(cellCoords);
+          cord = {
+            x: cellCoords.x,
+            y: cellCoords.y,
+            d: "s"
+          };
+          ghostdirection.push(cord);
+
         }
         break;
+
     }
   }
 
-  this.bindKeyDown = function() {
-    window.addEventListener("keydown", check );
+  this.bindKeyDown = function () {
+    window.addEventListener("keydown", check);
 
     $("#view").swipe({
-      swipe: function(direction) {
+      swipe: function (direction) {
         switch (direction) {
           case "up": check({ keyCode: 38 });
-                      break;
+            break;
           case "down": check({ keyCode: 40 });
-                       break;
+            break;
           case "left": check({ keyCode: 37 });
-                        break;
+            break;
           case "right": check({ keyCode: 39 });
-                         break;
+            break;
         }
       },
       threshold: 0
     });
   };
 
-  this.unbindKeyDown = function() {
+  this.unbindKeyDown = function () {
     window.removeEventListener("keydown", check, false);
     $("#view").swipe("destroy");
   };
@@ -537,62 +717,139 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
 
   this.bindKeyDown();
 }
+
 //Entry point
 function makeMaze() {
   if (player != undefined) {
     player.unbindKeyDown();
     player = null;
   }
-   var e = document.getElementById("diffSelect");
-   difficulty = e.options[e.selectedIndex].value;
-   cellSize = mazeCanvas.width / difficulty;
+  isFirstTime = true;
+  start = [];
+  ghostdirection = [];
+  var e = document.getElementById("diffSelect");
+  difficulty = e.options[e.selectedIndex].value;
+  console.log(mazeCanvas.width);
+  cellSize = mazeCanvas.width / difficulty;
   maze = new Maze(difficulty, difficulty);
+  playerStartingCoord = maze.startingCoordinate();
+  ghostmape = maze.map();
   draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
   player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, startSprite);
   if (document.getElementById("mazeContainer").style.opacity < "100") {
     document.getElementById("mazeContainer").style.opacity = "100";
   }
 }
-//------------------------------Database Methods-----------------------------------------------
 
 
 
 var username = localStorage.getItem("username")  // fetching data stored in database
+var finalscore;
+function ScoreSetter(){
+  var scr = (1/total_moves)*100000;
+  finalscore = scr.toFixed(2);
+  console.log(finalscore);
+}
 
-function score_update_easy(){
+function score_update_easy() {
+  ScoreSetter()
 
-  firebase.database().ref("PlayerRecords/" + username).update({
-    Easy:total_moves
+  var database = firebase.database();
+  var ref = database.ref("PlayerRecords/" + username);    //validating Data already exists or not
+  ref.on('value', function (snap) {
 
+    if (snap.exists() && (snap.val().Easy_level_Score < finalscore)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Easy_level_Score:finalscore,
+      })
+    }else if(snap.exists()&&(snap.val().Easy_level_Score < 1000)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Easy_level_Score:finalscore,
+      })
+
+    }
+  })
+  ref.update({
+    CurrentScore_EasyLevel:finalscore
+  })
+  
+}
+//functions to Update moves to the Database
+function score_update_medium(){
+
+  ScoreSetter()
+
+  var database = firebase.database();
+  var ref = database.ref("PlayerRecords/" + username);    //validating Data already exists or not
+  ref.on('value', function (snap) {
+
+    if (snap.exists() && (snap.val().Medium_level_Score < finalscore)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Medium_level_Score:finalscore,
+      })
+    }else if(snap.exists()&&(snap.val().Medium_level_Score < 1000)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Medium_level_Score:finalscore,
+      })
+
+    }
+  })
+  ref.update({
+    CurrentScore_MediumLevel:finalscore
+  })
+}
+
+function score_update_hard(){
+
+  ScoreSetter()
+
+  var database = firebase.database();
+  var ref = database.ref("PlayerRecords/" + username);    //validating Data already exists or not
+  ref.on('value', function (snap) {
+
+    if (snap.exists() && (snap.val().Hard_level_Score < finalscore)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Hard_level_Score:finalscore,
+      })
+    }else if(snap.exists()&&(snap.val().Hard_level_Score < 1000)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Hard_level_Score:finalscore,
+      })
+
+    }
+  })
+  ref.update({
+    CurrentScore_HardLevel:finalscore
   })
 }
 
 //functions to Update moves to the Database
 
 function score_update_extreme(){
+  ScoreSetter()
 
-  firebase.database().ref("PlayerRecords/" + username).update({
-    Extreme:total_moves
+  var database = firebase.database();
+  var ref = database.ref("PlayerRecords/" + username);    //validating Data already exists or not
+  ref.on('value', function (snap) {
 
+    if (snap.exists() && (snap.val().Extreme_level_Score < finalscore)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Extreme_level_Score:finalscore,
+      })
+    }else if(snap.exists()&&(snap.val().Extreme_level_Score < 1000)){
+      firebase.database().ref("PlayerRecords/" + username).update({
+        Extreme_level_Score:finalscore,
+      })
+
+    }
+  })
+  ref.update({
+    CurrentScore_ExtremeLevel:finalscore
   })
 }
-function score_update_hard(){
 
-  firebase.database().ref("PlayerRecords/" + username).update({
-    Hard:total_moves
 
-  })
-}
 
-//functions to Update moves to the Database
-
-function score_update_medium(){
-
-  firebase.database().ref("PlayerRecords/" + username).update({
-    Medium:total_moves
-
-  })
-}
 
 function score_selector_levels(){  //Setting score according to the Difficulty
  
@@ -603,7 +860,7 @@ function score_selector_levels(){  //Setting score according to the Difficulty
    else if(parseInt(difficulty)==15){
      score_update_medium()
    }
-   else if(parseInt(difficulty)==20){
+   else if(parseInt(difficulty)==18){
     score_update_hard()
   }
   else{
@@ -611,3 +868,4 @@ function score_selector_levels(){  //Setting score according to the Difficulty
   }
 
 }
+

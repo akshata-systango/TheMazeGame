@@ -29,7 +29,11 @@ function ValidateData() {        //Function to validate and add data to database
             } else {
                 firebase.database().ref("PlayerRecords/" + username).set({  // if not and adding data to database
                     name: Fullname,
-                    Username: username
+                    Username: username,
+                    Easy_level_Score: 0,
+                    Medium_level_Score: 0,
+                    Hard_level_Score: 0,
+                    Extreme_level_Score: 0,
                 })
                 function render() {                 // function to redirect user to Game page
                     localStorage.setItem("username", username)
