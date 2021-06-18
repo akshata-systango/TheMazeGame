@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
       <head>
-            <link rel="stylesheet" type="text/css" href="E:\FindTheCarrot\Leaderboard_CSS\leaderboard.css">
+            <link rel="stylesheet" type="text/css" href="../leaderboardCSS/leaderboard.css">
             <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
             <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
-            <script src="E:\FindTheCarrot\Server\Config.js"></script>
+            <script src="../Server/Config.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
+           
       </head>
       <body>
             <div class ="BackImage"></div>
@@ -16,8 +16,7 @@
                   <table >
                   <thead>
                         <th>Ranking</th>
-                        <th>Username</th>
-                        <th>Name</th>
+                        <th>Player Id</th>
                         <th>Current Score</th>
                         <th>Best Score</th>
                   </thead>
@@ -25,8 +24,8 @@
                   <tbody id = "tbody"></tbody>
                   </table>
                   <br>
-                  <input type="button" value="Back to Game!!" onclick="render()"/>
+                  <input type="button" value="Back to Game!!"  onclick="render()"/>
             </div>
-            <script src="E:\FindTheCarrot\Leaderboard_Script\Easy_Leaderboard_Script.js"></script>
+            <script src="../leaderboardScript/easyLeaderboardScript.js"></script>
       </body>
 </html>

@@ -1,11 +1,33 @@
 body{
-  overflow: hidden;
-  background-size: 400% 400%;
-  background-image: url("E:/FindTheCarrot/Media/image.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
+    overflow: hidden;
+    background-image: url("../media/image.jpeg");
+    background-size: cover;
+    backdrop-filter: blur(5px);
+   background-repeat: no-repeat;
+   font-family: "Audiowide", sans-serif;
 }
-
+#showMoves{
+    color: blue;
+    height: 130px;
+    width: 150px;
+    background-color: skyblue;
+    margin-bottom: 180px;
+    text-align: center;
+    border: 5px solid black;
+    margin-left: 100px;
+    font-family: "Audiowide", sans-serif;
+   
+}
+#show{
+    margin-top: 20px;
+    background-color: orange;
+    height: 40px;
+    width: 90px;
+    border: 3px solid whitesmoke;
+    margin-left: 20px;
+    color: black;
+   
+}
 button
 {
     text-align: center;
@@ -31,13 +53,13 @@ animation: gradient 10s ease infinite;
 }
 .dropdown1
 {
-    margin-left: 470px;
+    margin-left: 520px;
     margin-top: 10px;
     margin-right: 50px;
     align-content: center;
 }
 
-#diffSelect:hover{background-color: lawngreen; color: black;}
+#diffSelect:hover{background-color: whitesmoke; color: black;}
 #startMazeBtn:hover{background-color: yellow; color: black;}
 #exitbtn:hover{background-color: cyan; color: black;}
 
@@ -48,7 +70,7 @@ animation: gradient 10s ease infinite;
     margin-top: 10px;
     border: 2px solid grey;
     color: black;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 /*
 #message::before{
@@ -85,7 +107,7 @@ h1
     bottom: 0;
     left: 0;
     right: 0;
-    margin-left: 450px;
+    margin-left: 495px;
 }
 
 #startMazeBtn{
@@ -95,6 +117,7 @@ h1
     border: 2px solid grey;
     text-align: center;
     color: whitesmoke;
+    margin-bottom: 10px;
 
 }
 #exitbtn{
@@ -128,7 +151,7 @@ span
 #message
 {
     width: 300px;
-    height: 300px;
+    height: 350px;
     position: fixed;
     margin-left: 450px;
     margin-top: 170px;
@@ -142,6 +165,8 @@ span
     border : 5px solid grey;
     text-align: center;
     color: whitesmoke;
+    cursor: pointer;
+
 }
 #looseBtn{
     background-color: rebeccapurple;

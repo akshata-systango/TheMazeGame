@@ -8,7 +8,7 @@ var ghostSprite;
 var maze, draw, player;
 var total_moves;
 var cellSize;
-var difficulty;
+var difficulty = 0;
 var audio;
 var checkAudio = 0;
 var playerStartingCoord;
@@ -18,6 +18,14 @@ var ghostIndex = 0;
 var ghostdirection = [];
 var isFirstTime = true;
 var isGameInProgress = false;
+
+
+function showMoves(moves){
+  var countMoves = moves;
+  document.getElementById('show').innerHTML=countMoves;
+  console.log(countMoves);
+}
+
 
 window.onload = function () {
   let viewWidth = $("#view").width();
@@ -86,7 +94,6 @@ function ghostRun(ghostSprite = null) {
   var moves = 0;
 
   function move() {
-    console.log("move called");
     if (!isGameInProgress) {
       return;
     }
@@ -96,12 +103,11 @@ function ghostRun(ghostSprite = null) {
     var gd = paths.d;
     checkPosition(gx, gy, gd, ghostmape);
     ghostIndex++;
-    setTimeout(move, 1000);
+    setTimeout(move, 500);
   }
 
 
   function remove(x, y) {
-    console.log(x, y);
     var left = cellSize / 40;
     var right = cellSize / 25;
     ctx.clearRect(
@@ -212,7 +218,7 @@ function ghostRun(ghostSprite = null) {
 
 // Background music start as soon as player hits the start button
 function music() {
-  audio = new Audio('../Media/gameSound.mpeg');
+  audio = new Audio('../media/gameSound.mpeg');
   audio.play();
 }
 //Stop music on end game
@@ -224,7 +230,7 @@ function stop() {
 function rand(number) {
   return Math.floor(Math.random() * number);
 }
-// Shuffles the directions 
+//Shuffles the directions 
 function shuffle(direction) {
   for (var i = direction.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -237,14 +243,14 @@ function shuffle(direction) {
 //Function to display final scores
 function displayVictoryMess(moves) {
   total_moves = moves
-   stop();
+  stop();
   score_selector_levels();
   document.getElementById("moves").innerHTML = "You Moved " + moves + " Steps.";
   toggleVisablity("Message-Container");
 }
 
 function displayLooseMess() {
-  stop();
+ stop();
    toggleVisablity("LooseMessage-Container");
 }
 // Function to set visibility of score
@@ -411,13 +417,13 @@ function Maze(Width, Height) {
     }
   }
 
-  if (checkAudio == 0) {
-    music();
-    checkAudio++;
-  } else {
-    stop();
-    music();
-  }
+  // if (checkAudio == 0) {
+  //   music();
+  //   checkAudio++;
+  // } else {
+  //   stop();
+  //   music();
+  // }
   genMap();
   defineStartEnd();
   defineMaze();
@@ -608,10 +614,36 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
   //Function to check the direction for movements
   function check(e) {
     if (isFirstTime) {
-      setTimeout(function () {
-        ghostRun(ghostSprite);
-      }, 10000);
-      isFirstTime = false;
+       if (checkAudio == 0) {
+          music();
+          checkAudio++;
+          } else {
+          stop();
+          music();
+      }
+      if(difficulty == 10){
+
+          setTimeout(function () {
+          ghostRun(ghostSprite);
+          }, 5000);
+          isFirstTime = false;
+        }else if(difficulty == 15){
+           setTimeout(function () {
+          ghostRun(ghostSprite);
+          }, 8000);
+          isFirstTime = false;
+         }else if(difficulty == 18){
+           setTimeout(function () {
+          ghostRun(ghostSprite);
+          }, 10000);
+          isFirstTime = false;
+         }else {
+           setTimeout(function () {
+          ghostRun(ghostSprite);
+          }, 12000);
+          isFirstTime = false;
+ 
+        }
     }
     isGameInProgress = true;
     var cell = map[cellCoords.x][cellCoords.y];
@@ -621,6 +653,7 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       case 37: // west
         if (cell.w == true) {
           removeSprite(cellCoords);
+          showMoves(moves);
           cellCoords = {
             x: cellCoords.x - 1,
             y: cellCoords.y
@@ -637,6 +670,7 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       case 38: // north
         if (cell.n == true) {
           removeSprite(cellCoords);
+          showMoves(moves);
           cellCoords = {
             x: cellCoords.x,
             y: cellCoords.y - 1
@@ -653,6 +687,7 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       case 39: // east
         if (cell.e == true) {
           removeSprite(cellCoords);
+          showMoves(moves);
           cellCoords = {
             x: cellCoords.x + 1,
             y: cellCoords.y
@@ -670,6 +705,7 @@ function Player(maze, c, _cellsize, onComplete, startSprite = null) {
       case 40: // south
         if (cell.s == true) {
           removeSprite(cellCoords);
+          showMoves(moves);
           cellCoords = {
             x: cellCoords.x,
             y: cellCoords.y + 1
@@ -725,6 +761,7 @@ function makeMaze() {
     player = null;
   }
   isFirstTime = true;
+  difficulty = 0;
   start = [];
   ghostdirection = [];
   var e = document.getElementById("diffSelect");
@@ -770,7 +807,7 @@ function score_update_easy() {
     }
   })
   ref.update({
-    CurrentScore_EasyLevel:finalscore
+    Current_Score_Easy:finalscore
   })
   
 }
@@ -795,7 +832,7 @@ function score_update_medium(){
     }
   })
   ref.update({
-    CurrentScore_MediumLevel:finalscore
+    Current_Score_Medium:finalscore
   })
 }
 
@@ -819,7 +856,7 @@ function score_update_hard(){
     }
   })
   ref.update({
-    CurrentScore_HardLevel:finalscore
+    Current_Score_Hard:finalscore
   })
 }
 
@@ -844,7 +881,7 @@ function score_update_extreme(){
     }
   })
   ref.update({
-    CurrentScore_ExtremeLevel:finalscore
+    Current_Score_Extreme:finalscore
   })
 }
 

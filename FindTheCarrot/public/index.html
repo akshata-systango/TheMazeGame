@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <title>login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+    <script src="./Server/Config.js"></script>
+
+  </head>
+<body>
+
+  <!-- div to add image on background -->
+  <div class="Bg_Image"></div>
+
+<!--start of div to add heading -->
+  <div class="Poster">
+    <h1><img src="./media/2.gif"> Find The Carrot!! <img src="./media/ca.gif"></h1>
+  </div>
+<!-- end of div to add heading -->
+
+  <!-- start of login window -->
+  <div id="LoginWindow" class="LoginWindow">
+    <h4>Login Credentials</h4>
+    <input type="text" id="username" placeholder="Player-ID" class="test"><br>
+    <p id="User_Error" style="color: red;"></p>
+    <button class="ProceedBtn" id="ProceedBtn" onclick="ValidateData()">Let's Go</button>
+  </div>
+
+  <div id="register" class="LoginWindow" style="display: none;">
+    <h4>!!Register Here!!</h4>
+    <input type="text" id="username2" placeholder="Player Username" class="test"><br><br>
+    <input type="text" id="Fname" placeholder="Full Name" class="test">
+    <br>
+    <a href="./html/game.html"><button class="ProceedBtn" id="ProceedBtn" onclick="newUser()">Let's Go</button></a>
+  </div>
+<!-- end of login window -->
+  <script src="./mainScripts/loginDataValidation.js"></script>
+</body>
+</html>

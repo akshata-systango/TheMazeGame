@@ -10,7 +10,7 @@ body, html {
 
 .Bg_Image {
   /* The image used */
-  background-image: url("E:/FindTheCarrot/Media/bg1.png");
+  background-image: url("../media/bg1.png");
   
   /* Add the blur effect */
   filter: blur(8px);
@@ -69,11 +69,12 @@ body, html {
     font-size: 18px;
 }
 .ProceedBtn {
-  background-color: #4CAF50; /* Green */
+  background-color: Blue; 
   color: white;
   padding: 8px 10px;
   text-align: center;
   text-decoration: none;
+  border-radius: 10px;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
@@ -88,7 +89,8 @@ body, html {
 }
 
 .ProceedBtn:hover {
-  background-color: #555555;
+  background-color: cyan;
+  color: black;
   color: white;
 }
 img{
